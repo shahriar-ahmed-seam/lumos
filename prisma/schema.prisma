@@ -1,0 +1,60 @@
+// Loomos Database Schema
+// This schema defines the database structure for Loomos
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User projects - each generation session
+model Project {
+  id          String   @id @default(cuid())
+  userId      String?  // Optional: Clerk user ID (null for anonymous)
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  components  Component[]
+  chats       Chat[]
+  
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Generated components within a project
+model Component {
+  id          String   @id @default(cuid())
+  code        String   // The generated React component code
+  prompt      String   // User's original prompt
+  provider    String   // AI provider used (groq, openai, etc.)
+  version     Int      @default(1) // Version number for iterations
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId])
+  @@index([createdAt])
+}
+
+// Chat messages for conversation history
+model Chat {
+  id          String   @id @default(cuid())
+  role        String   // 'user' | 'assistant' | 'system'
+  content     String   // Message content
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId])
+  @@index([createdAt])
+}
+

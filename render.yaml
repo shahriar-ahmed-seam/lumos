@@ -1,0 +1,41 @@
+# Render Blueprint for Lumos
+# All-in-one alternative to Vercel: provisions a managed Postgres database and a
+# Node web service. Deploy via https://render.com → New → Blueprint, then add your
+# AI provider keys in the dashboard (or let users bring their own in-app).
+#
+# If you deploy the app on Vercel instead, you can still use this file to create
+# only the Postgres database, and paste its connection string into Vercel as
+# DATABASE_URL.
+
+databases:
+  - name: lumos-db
+    plan: free
+    databaseName: lumos
+    user: lumos
+
+services:
+  - type: web
+    name: lumos
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build && npm run db:migrate
+    startCommand: npm run start
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lumos-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: DEFAULT_AI_PROVIDER
+        value: groq
+      # Add provider keys in the Render dashboard (kept out of source control):
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false
