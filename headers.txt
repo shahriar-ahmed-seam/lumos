@@ -1,0 +1,8 @@
+HTTP/1.1 500 Internal Server Error
+Cache-Control: public, max-age=0, must-revalidate
+Date: Tue, 30 Jun 2026 21:31:26 GMT
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Vercel-Id: bom1::m6pv6-1782855086705-4823ce1940fe
+Transfer-Encoding: chunked
+
