@@ -1,13 +1,3 @@
-/**
- * Client-side settings for Lumos (Bring-Your-Own-Key).
- *
- * API keys and preferences live in the browser's localStorage and are sent
- * with each generation request to the same-origin /api/generate endpoint.
- * They are never persisted on the server and are only forwarded to the AI
- * provider the user selects. When no client key is set, the server falls back
- * to its own environment variables.
- */
-
 import type { AIProvider } from "@/lib/ai/models";
 
 export type KeyProvider = Exclude<AIProvider, "local">;
@@ -75,9 +65,6 @@ export function saveSettings(settings: LumosSettings): void {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
 }
 
-/**
- * Build the override payload sent to /api/generate. Empty keys are stripped.
- */
 export function getProviderOverrides(): {
   keys: Partial<Record<KeyProvider, string>>;
   ollamaBaseURL: string;

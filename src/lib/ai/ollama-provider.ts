@@ -1,10 +1,3 @@
-/**
- * Custom Ollama Provider for AI SDK v5
- * 
- * The ollama-ai-provider package only supports v1 spec,
- * so we create our own minimal compatible provider.
- */
-
 interface OllamaConfig {
   baseURL?: string;
 }
@@ -31,10 +24,6 @@ interface OllamaStreamResponse {
   eval_duration?: number;
 }
 
-/**
- * Create an Ollama model compatible with AI SDK v5
- * Returns a model object that streamText can use
- */
 export function createOllamaModel(
   modelId: string,
   config: OllamaConfig = {}
@@ -42,20 +31,15 @@ export function createOllamaModel(
   const baseURL = config.baseURL || process.env.OLLAMA_BASE_URL || "http://localhost:11434";
 
   return {
-    // Required specification version - must be v2 for AI SDK v5
     specificationVersion: "v2" as const,
     
-    // Provider identifier
     provider: "ollama",
     modelId,
     
-    // Default object generation modes
     defaultObjectGenerationMode: undefined,
     
-    // Add supportsStructuredOutputs for v2 spec
     supportsStructuredOutputs: false,
     
-    // Streaming implementation
     async doStream(options: {
       prompt: Array<{
         role: string;
@@ -64,7 +48,6 @@ export function createOllamaModel(
       temperature?: number;
       maxTokens?: number;
     }) {
-      // Build messages from prompt
       const messages = buildMessages(options.prompt);
       
       const response = await fetch(`${baseURL}/api/chat`, {
@@ -95,7 +78,6 @@ export function createOllamaModel(
       let completionTokens = 0;
       let promptTokens = 0;
 
-      // Create a ReadableStream that yields chunks
       const stream = new ReadableStream({
         async start(controller) {
           let buffer = "";
@@ -155,7 +137,6 @@ export function createOllamaModel(
                     return;
                   }
                 } catch {
-                  // Skip invalid JSON lines
                 }
               }
             }
@@ -180,7 +161,6 @@ export function createOllamaModel(
       };
     },
 
-    // Non-streaming implementation
     async doGenerate(options: {
       prompt: Array<{
         role: string;
@@ -232,7 +212,6 @@ export function createOllamaModel(
   };
 }
 
-// Helper to build messages from AI SDK prompt format
 function buildMessages(
   prompt: Array<{
     role: string;

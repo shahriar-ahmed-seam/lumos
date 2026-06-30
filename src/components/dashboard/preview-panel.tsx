@@ -43,14 +43,9 @@ interface PreviewPanelProps {
   className?: string;
 }
 
-/**
- * Sanitize and fix common issues in AI-generated code
- * Now uses the centralized code-validator
- */
 function sanitizeCode(code: string): string {
   const result = validateAndSanitizeCode(code);
   
-  // Log fixes for debugging
   if (result.fixes.length > 0) {
     console.log("[Sandbox] Applied fixes:", result.fixes);
   }
@@ -61,7 +56,6 @@ function sanitizeCode(code: string): string {
   return result.code;
 }
 
-// Inner component with Sandpack context
 function PreviewContent({
   activeTab,
   onRegenerate,
@@ -191,7 +185,6 @@ export function PreviewPanel({
     return processedCode;
   }, [currentVersion?.code]);
 
-  // Empty state
   if (!hasCode && !isGenerating) {
     return (
       <div
@@ -215,7 +208,6 @@ export function PreviewPanel({
     );
   }
 
-  // Streaming state
   if (isGenerating && streamingCode) {
     return (
       <div
@@ -224,7 +216,6 @@ export function PreviewPanel({
           className
         )}
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800 bg-neutral-900/50">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse" />
@@ -232,7 +223,6 @@ export function PreviewPanel({
           </div>
         </div>
 
-        {/* Streaming Code */}
         <div className="flex-1 overflow-hidden">
           <pre className="p-4 text-xs font-mono text-neutral-400 overflow-auto h-full">
             <code>{streamingCode}</code>
@@ -250,9 +240,7 @@ export function PreviewPanel({
         className
       )}
     >
-      {/* Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-neutral-800 bg-neutral-900/50">
-        {/* Tabs */}
         <div className="flex items-center gap-1 p-0.5 bg-neutral-800/50 rounded-lg">
           <button
             onClick={() => setActiveTab("preview")}
@@ -280,9 +268,7 @@ export function PreviewPanel({
           </button>
         </div>
 
-        {/* Actions */}
         <div className="flex items-center gap-1">
-          {/* Download component */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -294,7 +280,6 @@ export function PreviewPanel({
             Download
           </motion.button>
 
-          {/* Version selector */}
           {versions.length > 1 && (
             <div className="relative">
               <motion.button
@@ -365,7 +350,6 @@ export function PreviewPanel({
             </div>
           )}
 
-          {/* Copy */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -396,7 +380,6 @@ export function PreviewPanel({
             </AnimatePresence>
           </motion.button>
 
-          {/* Expand/Collapse */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -413,7 +396,6 @@ export function PreviewPanel({
         </div>
       </div>
 
-      {/* Preview Content */}
       <div className="flex-1 overflow-hidden">
         <SandpackProvider
           template="react"

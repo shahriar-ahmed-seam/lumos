@@ -9,9 +9,6 @@ const CreateComponentSchema = z.object({
   version: z.number().optional().default(1),
 });
 
-/**
- * POST /api/projects/[id]/components - Save a generated component
- */
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }

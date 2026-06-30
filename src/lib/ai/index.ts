@@ -1,10 +1,3 @@
-/**
- * Loomos AI Module
- * 
- * Central export for all AI-related functionality
- */
-
-// Models and providers
 export {
   getModel,
   getModelForTask,
@@ -17,7 +10,6 @@ export {
   type ModelConfig,
 } from "./models";
 
-// Prompts
 export {
   SYSTEM_PROMPT_GENERATE,
   SYSTEM_PROMPT_ITERATE,
@@ -27,7 +19,6 @@ export {
   PRESET_PROMPTS,
 } from "./prompts";
 
-// Rate limiting
 export {
   getNextProvider,
   parseGroqRateLimitHeaders,

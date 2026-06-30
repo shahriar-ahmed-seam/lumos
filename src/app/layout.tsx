@@ -31,7 +31,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Check if Clerk is configured
 const isClerkConfigured = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && 
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY !== "your_clerk_publishable_key";
 
@@ -50,7 +49,6 @@ export default function RootLayout({
     </html>
   );
 
-  // Only wrap with ClerkProvider if configured
   if (isClerkConfigured) {
     return <ClerkProvider>{content}</ClerkProvider>;
   }

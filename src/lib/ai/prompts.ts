@@ -1,16 +1,3 @@
-/**
- * Loomos System Prompts
- * 
- * Token-efficient prompts optimized for code generation.
- * Following the "Zero Waste" prompting strategy.
- * 
- * IMPORTANT: These prompts include explicit guardrails to prevent:
- * - Invalid icon imports
- * - Missing exports
- * - Unsupported package imports
- */
-
-// Valid Lucide icons that AI can use (subset for prompt efficiency)
 const COMMON_ICONS = [
   "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowUpRight",
   "ChevronUp", "ChevronDown", "ChevronLeft", "ChevronRight",
@@ -33,10 +20,6 @@ const COMMON_ICONS = [
   "Github", "Twitter", "Facebook", "Instagram", "Linkedin",
 ].join(", ");
 
-/**
- * Base system prompt for initial component generation
- * Used with: Llama 3.3 70B (groq-large)
- */
 export const SYSTEM_PROMPT_GENERATE = `You are Lumos, a React component generator.
 
 STACK:
@@ -69,10 +52,6 @@ export default function MyComponent() {
   );
 }`;
 
-/**
- * System prompt for iterative edits
- * Used with: Llama 3.1 8B (groq-small) to save tokens
- */
 export const SYSTEM_PROMPT_ITERATE = `You are a React code modifier.
 
 TASK: Apply user's requested changes to the provided code.
@@ -86,9 +65,6 @@ RULES:
 
 OUTPUT: Full updated React code only.`;
 
-/**
- * Schema-enforced prompt for structured output
- */
 export const SYSTEM_PROMPT_STRUCTURED = `You are Lumos. Generate React components.
 
 Stack: React 19, Tailwind CSS, Lucide icons.
@@ -108,9 +84,6 @@ Code rules:
 - Responsive design
 - Only lucide-react icons`;
 
-/**
- * Build the iteration prompt with previous code context
- */
 export function buildIterationPrompt(
   currentCode: string,
   instruction: string
@@ -122,9 +95,6 @@ ${currentCode}
 ${instruction}`;
 }
 
-/**
- * Build initial generation prompt from user description
- */
 export function buildGenerationPrompt(description: string): string {
   return `Generate: ${description}
 
@@ -135,10 +105,6 @@ Requirements:
 - Interactive states (hover, focus)`;
 }
 
-/**
- * Preset prompts for quick start
- * Displayed in the empty state UI
- */
 export const PRESET_PROMPTS = [
   {
     title: "Pricing Table",

@@ -109,7 +109,6 @@ export function CollapsibleSidebar({
     }
   };
 
-  // Collapsed state - thin bar with toggle
   if (isCollapsed) {
     return (
       <motion.aside
@@ -117,7 +116,6 @@ export function CollapsibleSidebar({
         animate={{ width: 56 }}
         className="h-full bg-neutral-900 border-r border-neutral-800 flex flex-col items-center py-3 gap-3"
       >
-        {/* Toggle button */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -128,7 +126,6 @@ export function CollapsibleSidebar({
           <PanelLeft className="w-5 h-5 text-neutral-400" />
         </motion.button>
 
-        {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center cursor-pointer"
@@ -136,7 +133,6 @@ export function CollapsibleSidebar({
           <Sparkles className="w-5 h-5 text-white" />
         </motion.div>
 
-        {/* New Chat */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -149,7 +145,6 @@ export function CollapsibleSidebar({
 
         <div className="flex-1" />
 
-        {/* API Keys */}
         <Link href="/api-keys">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -161,7 +156,6 @@ export function CollapsibleSidebar({
           </motion.button>
         </Link>
 
-        {/* Settings */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -175,14 +169,12 @@ export function CollapsibleSidebar({
     );
   }
 
-  // Expanded state - full sidebar
   return (
     <motion.aside
       initial={{ width: 256 }}
       animate={{ width: 256 }}
       className="h-full bg-neutral-900 border-r border-neutral-800 flex flex-col"
     >
-      {/* Header */}
       <div className="p-4 border-b border-neutral-800">
         <div className="flex items-center justify-between mb-4">
           <motion.div
@@ -206,7 +198,6 @@ export function CollapsibleSidebar({
           </motion.button>
         </div>
 
-        {/* New Chat Button */}
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -222,7 +213,6 @@ export function CollapsibleSidebar({
         </motion.button>
       </div>
 
-      {/* History Section */}
       <div className="flex-1 overflow-y-auto p-3">
         <div className="flex items-center justify-between px-2 mb-2">
           <div className="flex items-center gap-2 text-xs text-neutral-500 font-medium uppercase tracking-wide">
@@ -231,7 +221,6 @@ export function CollapsibleSidebar({
           </div>
         </div>
 
-        {/* Project list */}
         <div className="space-y-1">
           {isLoading ? (
             <motion.div
@@ -299,9 +288,7 @@ export function CollapsibleSidebar({
         </div>
       </div>
 
-      {/* Footer */}
       <div className="p-4 border-t border-neutral-800 space-y-3">
-        {/* Provider Status */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -318,7 +305,6 @@ export function CollapsibleSidebar({
           </p>
         </motion.div>
 
-        {/* API Keys Button */}
         <Link href="/api-keys">
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -330,7 +316,6 @@ export function CollapsibleSidebar({
           </motion.button>
         </Link>
 
-        {/* Settings Button */}
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

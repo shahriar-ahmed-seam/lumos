@@ -2,15 +2,11 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 
-// Schema validation
 const CreateProjectSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
 });
 
-/**
- * GET /api/projects - List all projects
- */
 export async function GET() {
   try {
     const projects = await prisma.project.findMany({
@@ -35,9 +31,6 @@ export async function GET() {
   }
 }
 
-/**
- * POST /api/projects - Create a new project
- */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -67,4 +60,3 @@ export async function POST(req: Request) {
     );
   }
 }
-//      { status: 500 }

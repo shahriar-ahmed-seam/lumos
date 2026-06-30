@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-/**
- * DELETE /api/projects/cleanup - Delete all projects with no components AND no chats
- */
 export async function DELETE() {
   try {
-    // Find all projects with no components AND no chats
     const emptyProjects = await prisma.project.findMany({
       where: {
         AND: [
@@ -26,7 +22,6 @@ export async function DELETE() {
       });
     }
 
-    // Delete all empty projects
     const result = await prisma.project.deleteMany({
       where: {
         id: {

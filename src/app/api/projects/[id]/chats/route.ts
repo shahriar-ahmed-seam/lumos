@@ -8,9 +8,6 @@ const CreateChatSchema = z.object({
   code: z.string().optional(),
 });
 
-/**
- * GET /api/projects/[id]/chats - Get all chat messages for a project
- */
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -33,9 +30,6 @@ export async function GET(
   }
 }
 
-/**
- * POST /api/projects/[id]/chats - Add a chat message
- */
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -45,7 +39,6 @@ export async function POST(
     const body = await req.json();
     const { role, content, code } = CreateChatSchema.parse(body);
 
-    // Store code in content if provided (for assistant messages)
     const messageContent = code ? `${content}\n\n---CODE---\n${code}` : content;
 
     const chat = await prisma.chat.create({
@@ -56,7 +49,6 @@ export async function POST(
       },
     });
 
-    // Return with parsed code for client convenience
     return NextResponse.json({
       ...chat,
       code: code || undefined,
@@ -79,9 +71,6 @@ export async function POST(
   }
 }
 
-/**
- * DELETE /api/projects/[id]/chats - Delete all chats for a project
- */
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }

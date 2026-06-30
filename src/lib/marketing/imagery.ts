@@ -1,17 +1,6 @@
-/**
- * Curated cinematic imagery for Lumos marketing pages.
- *
- * All photos are hosted on Unsplash's CDN (images.unsplash.com) and used per the
- * Unsplash License. Photographer credit is kept alongside each asset and surfaced
- * in the page footer. No Unsplash API key is required at runtime — URLs are static.
- */
-
 export interface Photo {
-  /** Full CDN url with sizing params. */
   url: string;
-  /** Photographer display name. */
   credit: string;
-  /** Photographer Unsplash profile. */
   creditUrl: string;
 }
 
@@ -42,7 +31,6 @@ export const CTA_BAND: Photo = {
   creditUrl: "https://unsplash.com/@pawel_czerwinski",
 };
 
-/** Unique photographer credits for the footer attribution block. */
 export const PHOTO_CREDITS: Photo[] = [HERO, SHOWCASE, ACCENT, CTA_BAND].filter(
   (photo, index, all) => all.findIndex((p) => p.credit === photo.credit) === index
 );

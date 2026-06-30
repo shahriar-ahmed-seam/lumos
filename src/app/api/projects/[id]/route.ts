@@ -7,9 +7,6 @@ const UpdateProjectSchema = z.object({
   description: z.string().optional(),
 });
 
-/**
- * GET /api/projects/[id] - Get a single project with components and chats
- */
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -35,7 +32,6 @@ export async function GET(
       );
     }
 
-    // Parse chat messages to extract code from content
     const parsedChats = project.chats.map((chat) => {
       const codeMarker = "\n\n---CODE---\n";
       if (chat.content.includes(codeMarker)) {
@@ -58,9 +54,6 @@ export async function GET(
   }
 }
 
-/**
- * PATCH /api/projects/[id] - Update a project
- */
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -93,9 +86,6 @@ export async function PATCH(
   }
 }
 
-/**
- * DELETE /api/projects/[id] - Delete a project
- */
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }

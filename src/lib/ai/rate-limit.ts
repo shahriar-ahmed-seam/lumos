@@ -1,10 +1,3 @@
-/**
- * Loomos Rate Limit Handler
- * 
- * Manages rate limiting, auto-fallback, and token monitoring
- * for the free tier constraints.
- */
-
 import { AIProvider, isProviderConfigured } from "./models";
 
 interface RateLimitInfo {
@@ -19,14 +12,8 @@ interface FallbackResult {
   reason?: string;
 }
 
-/**
- * Fallback order when a provider hits rate limits
- */
 const FALLBACK_ORDER: AIProvider[] = ["groq", "google", "local", "openai", "anthropic"];
 
-/**
- * Get the next available provider when current one is rate limited
- */
 export function getNextProvider(
   currentProvider: AIProvider,
   excludeProviders: AIProvider[] = []
@@ -49,9 +36,6 @@ export function getNextProvider(
   return null;
 }
 
-/**
- * Parse rate limit headers from Groq API response
- */
 export function parseGroqRateLimitHeaders(headers: Headers): RateLimitInfo {
   const remainingRequests = headers.get("x-ratelimit-remaining-requests");
   const remainingTokens = headers.get("x-ratelimit-remaining-tokens");
@@ -67,9 +51,6 @@ export function parseGroqRateLimitHeaders(headers: Headers): RateLimitInfo {
   };
 }
 
-/**
- * Check if an error is a rate limit error (429)
- */
 export function isRateLimitError(error: unknown): boolean {
   if (error instanceof Error) {
     return (
@@ -81,12 +62,9 @@ export function isRateLimitError(error: unknown): boolean {
   return false;
 }
 
-/**
- * Calculate wait time based on rate limit reset
- */
 export function getWaitTime(resetTime?: Date): number {
   if (!resetTime) {
-    return 60000; // Default 60 seconds
+    return 60000;
   }
   
   const now = new Date();
@@ -94,9 +72,6 @@ export function getWaitTime(resetTime?: Date): number {
   return Math.max(waitMs, 0);
 }
 
-/**
- * Format remaining tokens for display
- */
 export function formatTokensRemaining(tokens: number): string {
   if (tokens >= 1000) {
     return `${(tokens / 1000).toFixed(1)}k`;
@@ -104,17 +79,10 @@ export function formatTokensRemaining(tokens: number): string {
   return tokens.toString();
 }
 
-/**
- * Estimate token count from text (rough approximation)
- * ~4 characters per token for English text
- */
 export function estimateTokens(text: string): number {
   return Math.ceil(text.length / 4);
 }
 
-/**
- * Check if we have enough tokens for a request
- */
 export function hasEnoughTokens(
   remainingTokens: number,
   estimatedUsage: number,

@@ -6,7 +6,7 @@ export interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
-  code?: string; // For assistant messages that include generated code
+  code?: string;
   createdAt: Date;
 }
 
@@ -43,15 +43,12 @@ export function useChatStore() {
     isLoading: true,
   });
 
-  // Use ref to track current projectId for async operations
   const currentProjectIdRef = useRef<string | null>(null);
   
-  // Keep ref in sync with state
   useEffect(() => {
     currentProjectIdRef.current = state.currentProjectId;
   }, [state.currentProjectId]);
 
-  // Initialize: Load saved project on mount
   useEffect(() => {
     const initializeStore = async () => {
       const savedProjectId = localStorage.getItem(STORAGE_KEY);
@@ -66,7 +63,6 @@ export function useChatStore() {
     initializeStore();
   }, []);
 
-  // Load a project and its messages
   const loadProject = useCallback(async (projectId: string): Promise<boolean> => {
     setState(prev => ({ ...prev, isLoading: true }));
 
@@ -74,7 +70,6 @@ export function useChatStore() {
       const res = await fetch(`/api/projects/${projectId}`);
       
       if (!res.ok) {
-        // Project doesn't exist, clear storage
         localStorage.removeItem(STORAGE_KEY);
         currentProjectIdRef.current = null;
         setState({ currentProjectId: null, messages: [], codeVersions: [], currentVersionIndex: 0, isLoading: false });
@@ -83,7 +78,6 @@ export function useChatStore() {
 
       const project = await res.json();
       
-      // Convert chats from DB format to our message format
       const messages: ChatMessage[] = project.chats.map((chat: any) => ({
         id: chat.id,
         role: chat.role as "user" | "assistant",
@@ -92,7 +86,6 @@ export function useChatStore() {
         createdAt: new Date(chat.createdAt),
       }));
 
-      // Extract code versions from messages
       const codeVersions: CodeVersion[] = messages
         .filter((m) => m.role === "assistant" && m.code)
         .map((m, idx) => ({
@@ -108,7 +101,7 @@ export function useChatStore() {
         currentProjectId: projectId,
         messages,
         codeVersions,
-        currentVersionIndex: 0, // Most recent version
+        currentVersionIndex: 0,
         isLoading: false,
       });
       
@@ -122,7 +115,6 @@ export function useChatStore() {
     }
   }, []);
 
-  // Create a new project (only called when starting a new chat)
   const createProject = useCallback(async (title?: string): Promise<string | null> => {
     try {
       const res = await fetch("/api/projects", {
@@ -155,20 +147,16 @@ export function useChatStore() {
     }
   }, []);
 
-  // Add a user message to the current chat
   const addUserMessage = useCallback(async (content: string): Promise<string | null> => {
     let projectId = currentProjectIdRef.current;
 
-    // If no project exists, create one with the first message as title
     if (!projectId) {
       const title = content.length > 50 ? content.slice(0, 47) + "..." : content;
       projectId = await createProject(title);
       if (!projectId) return null;
-      // Update the ref immediately so addAssistantMessage can use it
       currentProjectIdRef.current = projectId;
     }
 
-    // Save to database
     try {
       const res = await fetch(`/api/projects/${projectId}/chats`, {
         method: "POST",
@@ -196,7 +184,6 @@ export function useChatStore() {
         messages: [...prev.messages, newMessage],
       }));
 
-      // Update project title if this is the first message
       const title = content.length > 50 ? content.slice(0, 47) + "..." : content;
       await fetch(`/api/projects/${projectId}`, {
         method: "PATCH",
@@ -211,7 +198,6 @@ export function useChatStore() {
     }
   }, [state.currentProjectId, state.messages.length, createProject]);
 
-  // Add an assistant message (with generated code)
   const addAssistantMessage = useCallback(async (content: string, code?: string): Promise<boolean> => {
     const projectId = currentProjectIdRef.current;
     if (!projectId) {
@@ -259,7 +245,6 @@ export function useChatStore() {
         currentVersionIndex: 0,
       }));
 
-      // Also save the component to the components table for history
       if (code) {
         await fetch(`/api/projects/${projectId}/components`, {
           method: "POST",
@@ -280,7 +265,6 @@ export function useChatStore() {
     }
   }, []);
 
-  // Start a new chat (clears current state, will create project on first message)
   const startNewChat = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     currentProjectIdRef.current = null;
@@ -293,7 +277,6 @@ export function useChatStore() {
     });
   }, []);
 
-  // Set the current version index (for restore points)
   const setCurrentVersionIndex = useCallback((index: number) => {
     setState(prev => ({
       ...prev,
@@ -301,7 +284,6 @@ export function useChatStore() {
     }));
   }, []);
 
-  // Get the latest code from the conversation
   const getLatestCode = useCallback((): string | null => {
     for (let i = state.messages.length - 1; i >= 0; i--) {
       if (state.messages[i].code) {

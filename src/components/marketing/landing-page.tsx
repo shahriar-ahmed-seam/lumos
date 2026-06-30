@@ -95,7 +95,6 @@ const PROVIDERS = [
 export function LandingPage() {
   return (
     <div className="relative min-h-screen bg-neutral-950 text-neutral-50 overflow-x-hidden">
-      {/* ---------- Navbar ---------- */}
       <header className="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-neutral-950/60 backdrop-blur-xl">
         <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
@@ -132,7 +131,6 @@ export function LandingPage() {
         </nav>
       </header>
 
-      {/* ---------- Hero ---------- */}
       <section className="relative min-h-screen flex items-center justify-center isolate">
         <Image
           src={HERO.url}
@@ -142,7 +140,6 @@ export function LandingPage() {
           sizes="100vw"
           className="object-cover -z-10"
         />
-        {/* cinematic overlays */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-neutral-950/70 via-neutral-950/40 to-neutral-950" />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(10,10,10,0.55)_100%)]" />
 
@@ -222,7 +219,6 @@ export function LandingPage() {
         <div className="pointer-events-none absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-neutral-950 to-transparent" />
       </section>
 
-      {/* ---------- Provider strip ---------- */}
       <section id="providers" className="border-y border-white/5 bg-neutral-950">
         <div className="mx-auto max-w-7xl px-6 py-10">
           <p className="text-center text-xs uppercase tracking-widest text-neutral-500">
@@ -241,7 +237,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ---------- Features ---------- */}
       <section id="features" className="mx-auto max-w-7xl px-6 py-28">
         <SectionHeading
           eyebrow="Everything you need"
@@ -269,7 +264,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ---------- Showcase ---------- */}
       <section className="relative isolate overflow-hidden border-y border-white/5">
         <Image src={SHOWCASE.url} alt="" fill sizes="100vw" className="object-cover -z-10 opacity-30" />
         <div className="absolute inset-0 -z-10 bg-neutral-950/70" />
@@ -343,7 +337,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ---------- How it works ---------- */}
       <section id="how" className="mx-auto max-w-7xl px-6 py-28">
         <SectionHeading
           eyebrow="How it works"
@@ -374,7 +367,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ---------- CTA band ---------- */}
       <section className="relative isolate overflow-hidden">
         <Image src={CTA_BAND.url} alt="" fill sizes="100vw" className="object-cover -z-10" />
         <div className="absolute inset-0 -z-10 bg-neutral-950/75" />
@@ -417,7 +409,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ---------- Footer ---------- */}
       <footer className="border-t border-white/5 bg-neutral-950">
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">

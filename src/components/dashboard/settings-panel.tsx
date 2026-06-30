@@ -29,7 +29,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
   const [saved, setSaved] = useState(false);
 
-  // Load persisted settings whenever the panel opens.
   useEffect(() => {
     if (isOpen) {
       setSettings(loadSettings());
@@ -56,7 +55,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
       <div className="relative w-full max-w-lg bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden">
-        {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-neutral-800">
           <div className="flex items-center gap-2">
             <Settings className="w-5 h-5 text-neutral-400" />
@@ -67,9 +65,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           </button>
         </div>
 
-        {/* Content */}
         <div className="p-4 space-y-6 max-h-[70vh] overflow-y-auto">
-          {/* API Keys */}
           <div>
             <h3 className="text-sm font-medium text-neutral-300 mb-1">API Keys</h3>
             <p className="text-xs text-neutral-500 mb-4">
@@ -118,7 +114,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             </div>
           </div>
 
-          {/* Local Ollama */}
           <div>
             <h3 className="text-sm font-medium text-neutral-300 mb-3">Local Ollama</h3>
             <div className="space-y-3">
@@ -143,7 +138,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             </div>
           </div>
 
-          {/* Preferences */}
           <div>
             <h3 className="text-sm font-medium text-neutral-300 mb-3">Preferences</h3>
             <div className="space-y-3">
@@ -177,7 +171,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             </div>
           </div>
 
-          {/* Account (only when Clerk is configured) */}
           {isClerkConfigured && (
             <div>
               <h3 className="text-sm font-medium text-neutral-300 mb-3">Account</h3>
@@ -186,7 +179,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           )}
         </div>
 
-        {/* Footer */}
         <div className="flex items-center justify-end gap-3 p-4 border-t border-neutral-800 bg-neutral-900/50">
           <button onClick={onClose} className="px-4 py-2 text-sm text-neutral-400 hover:text-white transition-colors">
             Cancel
@@ -214,7 +206,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   );
 }
 
-// Isolated so the Clerk hook only runs when Clerk is actually configured.
 function SignOutButton() {
   const { signOut } = useClerk();
   return (
@@ -231,7 +222,6 @@ function SignOutButton() {
   );
 }
 
-// Settings button for sidebar
 export function SettingsButton({ onClick }: { onClick: () => void }) {
   return (
     <button

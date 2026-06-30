@@ -25,15 +25,12 @@ export const ChatPanel = forwardRef<HTMLDivElement, ChatPanelProps>(
           <MessageBubble key={message.id} message={message} />
         ))}
 
-        {/* Streaming/Generating indicator */}
         {isGenerating && (
           <div className="flex gap-3">
-            {/* Assistant avatar */}
             <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
               <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
 
-            {/* Streaming content */}
             <div className="flex-1 min-w-0 pt-0.5">
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="font-medium text-sm text-neutral-200">Lumos</span>
@@ -88,7 +85,6 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 
   return (
     <div className="flex gap-3 group">
-      {/* Avatar */}
       <div
         className={cn(
           "flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center",
@@ -104,7 +100,6 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         )}
       </div>
 
-      {/* Content */}
       <div className="flex-1 min-w-0 pt-0.5">
         <div className="flex items-center gap-2 mb-1">
           <span className="font-medium text-sm text-neutral-200">
@@ -119,18 +114,15 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         </div>
 
         {isUser ? (
-          // User message - simple text
           <p className="text-sm text-neutral-300 whitespace-pre-wrap leading-relaxed">
             {message.content}
           </p>
         ) : (
-          // Assistant message - text and optional code reference
           <div className="space-y-2">
             <p className="text-sm text-neutral-300 leading-relaxed">
               {message.content}
             </p>
 
-            {/* If there's code, show a compact indicator */}
             {message.code && (
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-800/50 border border-neutral-700/50 rounded-lg">
                 <div className="w-2 h-2 rounded-full bg-green-500" />

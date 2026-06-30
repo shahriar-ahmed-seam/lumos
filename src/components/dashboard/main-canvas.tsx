@@ -35,11 +35,9 @@ export function MainCanvas({ onPresetClick, children }: MainCanvasProps) {
     return <div className="flex-1 overflow-y-auto p-6">{children}</div>;
   }
 
-  // Empty state with presets
   return (
     <div className="flex-1 overflow-y-auto flex items-center justify-center p-6">
       <div className="max-w-3xl mx-auto text-center space-y-8">
-        {/* Welcome Message */}
         <div className="space-y-4">
           <div className="flex items-center justify-center">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
@@ -52,7 +50,6 @@ export function MainCanvas({ onPresetClick, children }: MainCanvasProps) {
           </p>
         </div>
 
-        {/* Preset Prompts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-12">
           {PRESET_PROMPTS.map((preset, index) => {
             const Icon = PRESET_ICONS[preset.icon] ?? CircleHelp;
@@ -76,7 +73,6 @@ export function MainCanvas({ onPresetClick, children }: MainCanvasProps) {
           })}
         </div>
 
-        {/* Tips */}
         <div className="mt-12 text-sm text-neutral-500">
           <p>💡 Tip: Be specific about colors, layout, and functionality for best results</p>
         </div>

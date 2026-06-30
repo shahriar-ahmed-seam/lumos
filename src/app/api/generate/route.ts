@@ -12,10 +12,8 @@ import {
   type AIProvider,
 } from "@/lib/ai";
 
-// Runtime check to ensure the model package is compatible
 type AnyLanguageModel = ReturnType<typeof getModel>;
 
-// Request schema
 const RequestSchema = z.object({
   prompt: z.string().min(1),
   currentCode: z.string().optional(),
@@ -37,32 +35,25 @@ export async function POST(req: Request) {
       ollamaBaseURL,
     };
 
-    // Determine which model to use
     let model;
     let currentProvider: AIProvider = provider || "groq";
 
     if (modelKey) {
-      // Use specific model if provided
       model = getModel(modelKey, overrides);
     } else if (isIteration && currentCode) {
-      // Use smaller model for iterations (saves tokens)
       model = getModelForTask("iterate", currentProvider, overrides);
     } else {
-      // Use larger model for initial generation
       model = getModelForTask("generate", currentProvider, overrides);
     }
 
-    // Build the appropriate prompt
     const systemPrompt = isIteration ? SYSTEM_PROMPT_ITERATE : SYSTEM_PROMPT_GENERATE;
     const userPrompt = isIteration && currentCode
       ? buildIterationPrompt(currentCode, prompt)
       : buildGenerationPrompt(prompt);
 
-    // Attempt generation with auto-fallback
     try {
       console.log(`[Generate] Using provider: ${currentProvider}, isIteration: ${isIteration}`);
       
-      // Add timeout for Ollama since it can be slow
       const generatePromise = streamText({
         model: model as any,
         system: systemPrompt,
@@ -71,8 +62,6 @@ export async function POST(req: Request) {
         temperature: 0.7,
       } as any);
 
-      // For local Ollama, set a 60 second timeout
-      // For cloud providers, 30 seconds is enough
       const timeoutMs = currentProvider === "local" ? 60000 : 30000;
       
       const result = await Promise.race([
@@ -85,7 +74,6 @@ export async function POST(req: Request) {
       console.log(`[Generate] Success with ${currentProvider}`);
       return result.toTextStreamResponse();
     } catch (error) {
-      // Handle rate limiting with auto-fallback
       if (isRateLimitError(error)) {
         const fallback = getNextProvider(currentProvider);
         
@@ -99,14 +87,13 @@ export async function POST(req: Request) {
           );
 
           const retryResult = await streamText({
-            model: fallbackModel as any, // Type cast needed due to ollama-ai-provider using older model version
+            model: fallbackModel as any,
             system: systemPrompt,
             prompt: userPrompt,
             maxTokens: isIteration ? 2048 : 4096,
             temperature: 0.7,
           } as any);
 
-          // Add header to indicate fallback was used
           const response = retryResult.toTextStreamResponse();
           response.headers.set("X-Loomos-Fallback", fallback.provider);
           response.headers.set("X-Loomos-Fallback-Reason", fallback.reason || "Rate limited");
