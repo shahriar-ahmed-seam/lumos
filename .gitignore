@@ -49,3 +49,4 @@ prisma/dev.db
 # Editor
 .idea/
 *.swp
+.env*
