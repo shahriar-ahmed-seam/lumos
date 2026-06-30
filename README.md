@@ -13,6 +13,8 @@ Lumos is an AI studio that turns plain-English prompts into **production-ready R
 [![Vercel AI SDK](https://img.shields.io/badge/Vercel%20AI%20SDK-6-black?logo=vercel)](https://sdk.vercel.ai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+### 🌐 [**Live Demo → lumos-cyan.vercel.app**](https://lumos-cyan.vercel.app)
+
 </div>
 
 ---
