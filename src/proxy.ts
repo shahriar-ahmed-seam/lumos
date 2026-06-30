@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import type { NextFetchEvent, NextRequest } from "next/server";
 
+// Next.js 16 "proxy" convention (formerly "middleware").
 // Clerk is optional. When it isn't configured the app runs in open/anonymous
-// mode and the middleware is a passthrough. We import Clerk lazily so its
-// module code never executes (and never fails) in deployments without keys.
+// mode and this proxy is a passthrough. Clerk is imported lazily so its module
+// code never executes in deployments without keys.
 const isClerkConfigured =
   !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY !== "your_clerk_publishable_key";
 
-export default async function middleware(req: NextRequest, event: NextFetchEvent) {
+export default async function proxy(req: NextRequest, event: NextFetchEvent) {
   if (!isClerkConfigured) {
     return NextResponse.next();
   }
@@ -33,9 +34,7 @@ export default async function middleware(req: NextRequest, event: NextFetchEvent
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
     "/(api|trpc)(.*)",
   ],
 };
